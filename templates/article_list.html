@@ -28,12 +28,13 @@
     <p class="mb-1">
       <span class="fw-bold">{{ comment.author }}</span><br>
       {{ comment.comment }} 
-      <p>...</p>
+      
     </p>
   {% empty %}
     <p class="text-muted mb-0">No comments yet.</p>
   {% endfor %}
   {% if article.comment_set.count > 1 %}
+  <p>...</p>
  <a href="{{ article.get_absolute_url }}" class="text-decoration-none">
       View more comments
     </a>
