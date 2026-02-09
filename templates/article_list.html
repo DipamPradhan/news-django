@@ -10,15 +10,37 @@
     <span class="text-muted">by {{ article.author }} |
       {{ article.date }}</span>
   </div>
-  <div class="card-body">
+   <div class="card-body">
     {{ article.body }}
+     <a href="{{ article.get_absolute_url }}" style="color:red"class="text-decoration-none">Add New Comment</a>  
+  
+ 
+    {% if article.author.pk == request.user.pk %}
+    <a href="{% url 'article_edit' article.pk %}">Edit</a>
+    <a href="{% url 'article_delete' article.pk %}">Delete</a>
+    {% endif %}
+    
   </div>
-  <div class="card-footer text-center text-muted">
-    {% if article.author.pk == request.user.pk %} 
-  <a href="{% url 'article_edit' article.pk %}">Edit</a>
-  <a href="{% url 'article_delete' article.pk %}">Delete</a>
-  {% endif %}</div>
+  
+<div class="card-footer">
+  
+  {% for comment in article.comment_set.all|slice:":1" %}
+    <p class="mb-1">
+      <span class="fw-bold">{{ comment.author }}</span><br>
+      {{ comment.comment }} 
+      <p>...</p>
+    </p>
+  {% empty %}
+    <p class="text-muted mb-0">No comments yet.</p>
+  {% endfor %}
+  {% if article.comment_set.count > 1 %}
+ <a href="{{ article.get_absolute_url }}" class="text-decoration-none">
+      View more comments
+    </a>
+  {% endif %}
 </div>
-<br />
+
+</div>
+<br/>
 {% endfor %}
 {% endblock content %}
